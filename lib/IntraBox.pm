@@ -1,20 +1,43 @@
 package IntraBox;
 use Dancer ':syntax';
 use Digest::SHA1;
+use strict;
+use warnings;
 
 our $VERSION = '0.1';
 
-my $isAdmin = false;
-my $user    = $ENV{'REMOTE_USER'};
+#Récupération du nom
+my $user = $ENV{'REMOTE_USER'};
 
+#Vérification si il est admin
+#Récupération du groupe dans lequel il est
+#Récupération de la taille maximale de son espace personnel et fichier
+my $isAdmin;
+my $user_group;
+my $user_size_file_limit;
+my $user_size_space_limit;
+( $isAdmin, $user_group, $user_size_file_limit, $user_size_space_limit ) =
+  recuperation_donnees_session_user($user);
+
+#Récupération de la taille actuelle utilisée de son espace personnel
+my $user_space_used;
+$user_space_used = calcul_used_space($user);
+
+#Calcul de l'espace libre de user
+my $user_space_free = $user_size_space_limit - $user_space_used;
+
+
+#--------- ROUTEES -------
 get '/' => sub {
 	my $info_color = "info-vert";
 	my $message    =
 "Vous pouvez uploader vos fichiers en renseignant tous les champs nécessaires";
 	template 'index',
 	  {
-		info_color => $info_color,
-		message    => $message
+		info_color            => $info_color,
+		message               => $message,
+		user_space_used       => ( $user_space_used / ( 1024 * 1024 ) ),
+		user_size_space_limit => ( $user_size_space_limit / ( 1024 * 1024 ) )
 	  };
 };
 
@@ -23,16 +46,10 @@ get '/admin' => sub {
 };
 
 post '/upload' => sub {
-	my $message    = "Upload en cours";
-	my $info_color = "info-orange";
-
-	template 'index',
-	  {
-		info_color => $info_color,
-		message    => $message
-	  };
 	upload_file();
 };
+
+#--------- /ROUTEES -------
 
 #----------Sub Routines --------
 
@@ -57,8 +74,6 @@ sub upload_file {
 		my @name_files;
 		my @hash_names;
 		my $total_size;
-
-		my $size_limit_user = 25 * 1024 * 1024;
 
 		my $controle_valid = 1;
 
@@ -92,7 +107,7 @@ sub upload_file {
 
 				$total_size = $total_size + $size_files[$i];
 
-				if ( $size_files[$i] >= $size_limit_user ) {
+				if ( $size_files[$i] >= $user_size_file_limit ) {
 					$info_color = "info-rouge";
 					my $temp_name_fic_prob = param("file$i");
 					$message = "Le fichier $temp_name_fic_prob 
@@ -130,6 +145,8 @@ sub upload_file {
 				$info_color = "info-vert";
 
 				$message = "Upload terminé des fichiers : $temp_message";
+				
+				
 			}
 		}
 	}
@@ -158,9 +175,9 @@ sub count_files {
 }
 
 sub randomposition {
-   my $chaine = $_[0];
-   return int rand length $chaine;
-   } 
+	my $chaine = $_[0];
+	return int rand length $chaine;
+}
 
 sub generate_aleatoire_key {
 	my $lenght = $_[0];
@@ -169,8 +186,8 @@ sub generate_aleatoire_key {
 	my $list_char =
 	  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	for ( $i = 1 ; $i < $lenght ; ++$i ) {
-		 my $temp_key = substr( $list_char, randomposition($list_char), 1 );
-		 $key = "$key$temp_key";
+		my $temp_key = substr( $list_char, randomposition($list_char), 1 );
+		$key = "$key$temp_key";
 	}
 	return $key;
 }
@@ -180,6 +197,32 @@ sub generate_aleatoire_key {
 #	my $size_file = -s "/$chemin_fic";
 #	return $size_file;
 #}
+
 #--- /UPLOAD ----
 
+#--- Infos User ---
+
+sub recuperation_donnees_session_user {
+	my $user = $_[0];
+	my $isAdmin;
+	if ($user eq "abourgan") {
+		$isAdmin = true;
+
+	}
+	else { $isAdmin = false; }
+
+	my $user_group            = "eleves";
+	my $user_size_file_limit  = 100 * 1024 * 1024;
+	my $user_size_space_limit = 400 * 1024 * 1024;
+	return ( $isAdmin, $user_group, $user_size_file_limit,
+		$user_size_space_limit );
+}
+
+sub calcul_used_space {
+	my $user            = $_[0];
+	my $user_space_used = 10 * 1024 * 1024;
+	return $user_space_used;
+}
+
+#--- /Infos User ---
 true;
