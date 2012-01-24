@@ -1,4 +1,4 @@
-package DB::IntraBox::Result::Usergroup;
+package DB::intrabox::Result::Usergroup;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -12,7 +12,7 @@ __PACKAGE__->load_components("FromValidators", "InflateColumn::DateTime", "Core"
 
 =head1 NAME
 
-DB::IntraBox::Result::Usergroup
+DB::intrabox::Result::Usergroup
 
 =cut
 
@@ -71,8 +71,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id_usergroup");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 11:41:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GtvmMHzIObQnc56fKd45gw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 12:26:50
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/TMSqBh/Y9eq6SXhszYe9Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

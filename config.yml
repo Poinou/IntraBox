@@ -30,7 +30,7 @@ engines:
 plugins:
   DBIC:
     DbIntraBox:
-      schema_class: DB::IntraBox
+      schema_class: DB::intrabox
       dsn: dbi:mysql:intrabox
       user: root
       pass: tnwadt22

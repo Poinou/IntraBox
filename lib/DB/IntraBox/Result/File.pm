@@ -1,4 +1,4 @@
-package DB::IntraBox::Result::File;
+package DB::intrabox::Result::File;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -12,7 +12,7 @@ __PACKAGE__->load_components("FromValidators", "InflateColumn::DateTime", "Core"
 
 =head1 NAME
 
-DB::IntraBox::Result::File
+DB::intrabox::Result::File
 
 =cut
 
@@ -70,13 +70,13 @@ __PACKAGE__->set_primary_key("id_file", "id_deposit");
 
 Type: has_many
 
-Related object: L<DB::IntraBox::Result::Download>
+Related object: L<DB::intrabox::Result::Download>
 
 =cut
 
 __PACKAGE__->has_many(
   "downloads",
-  "DB::IntraBox::Result::Download",
+  "DB::intrabox::Result::Download",
   {
     "foreign.id_deposit" => "self.id_deposit",
     "foreign.id_file"    => "self.id_file",
@@ -88,20 +88,20 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<DB::IntraBox::Result::Deposit>
+Related object: L<DB::intrabox::Result::Deposit>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "id_deposit",
-  "DB::IntraBox::Result::Deposit",
+  "DB::intrabox::Result::Deposit",
   { id_deposit => "id_deposit" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 11:41:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IRnLJwvC0ALHuwaE/sCTWA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 12:26:50
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lUpsXwGGhijZ6mmOYUJIzw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

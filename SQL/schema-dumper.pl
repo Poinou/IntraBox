@@ -6,7 +6,7 @@ use DBIx::Class::Schema::Loader qw/make_schema_at/;
 
 warn "INC: @INC\n";
 
-my $classe_base     = 'DB::IntraBox';
+my $classe_base     = 'DB::intrabox';
 my $repertoire_base = '../lib';
 my $dsn = 'dbi:mysql:intrabox:localhost';
 my $user = 'root';

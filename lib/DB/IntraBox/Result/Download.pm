@@ -1,4 +1,4 @@
-package DB::IntraBox::Result::Download;
+package DB::intrabox::Result::Download;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -12,7 +12,7 @@ __PACKAGE__->load_components("FromValidators", "InflateColumn::DateTime", "Core"
 
 =head1 NAME
 
-DB::IntraBox::Result::Download
+DB::intrabox::Result::Download
 
 =cut
 
@@ -95,20 +95,20 @@ __PACKAGE__->set_primary_key("id_download", "id_deposit", "id_file");
 
 Type: belongs_to
 
-Related object: L<DB::IntraBox::Result::File>
+Related object: L<DB::intrabox::Result::File>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "file",
-  "DB::IntraBox::Result::File",
+  "DB::intrabox::Result::File",
   { id_deposit => "id_deposit", id_file => "id_file" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 11:41:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iDZSACtQQIVLmQ1kV/HR9Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 12:26:50
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ur2pBvH8ZJehveznKWfamg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
