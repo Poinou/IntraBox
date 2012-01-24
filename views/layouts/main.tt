@@ -30,7 +30,8 @@
 		<h1><a href="[% request.uri_base %]/admin">ShareX</a></h1>
 
 		<h2>Système d'échange de fichiers</h2>
-		<div id="profile">Connecté sous:<br><em>[% user %]</em> (<a href="">Se déconnecter</a>)<br>Espace disque utilisé: [% user_space_used %]mo/0[% user_space_free %]mo</div>
+		<div id="profile">Connecté sous:<br><em>[% user %]</em> (<a href="">Se déconnecter</a>)<br>
+		Espace disque utilisé: [% user_space_used %]mo/[% user_size_space_limit %]mo</div>
 	</div>
 	<div id="menubar">
 		<menu>
