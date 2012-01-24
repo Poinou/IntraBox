@@ -87,7 +87,7 @@ sub upload_file {
 #				my $sha1 = Digest::SHA1->new;
 #				$sha1->add("$name_files[$i]");
 #				$hash_names[$i] = $sha1->hexdigest;
-				my $key = generate_aleatoire_key(125);
+				my $key = generate_aleatoire_key(15);
 				$hash_names[$i] = $key;
 
 				$total_size = $total_size + $size_files[$i];
