@@ -34,10 +34,6 @@ post '/upload' => sub {
 	upload_file();
 };
 
-
-
-
-
 #----------Sub Routines --------
 
 #--- UPLOAD ----
@@ -88,9 +84,11 @@ sub upload_file {
 				$size_files[$i] = $upload_files[$i]->size;
 				$name_files[$i] = $upload_files[$i]->basename;
 
-				my $sha1 = Digest::SHA1->new;
-				$sha1->add("$name_files[$i]");
-				$hash_names[$i] = $sha1->hexdigest;
+#				my $sha1 = Digest::SHA1->new;
+#				$sha1->add("$name_files[$i]");
+#				$hash_names[$i] = $sha1->hexdigest;
+				my $key = generate_aleatoire_key(125);
+				$hash_names[$i] = $key;
 
 				$total_size = $total_size + $size_files[$i];
 
@@ -136,10 +134,11 @@ sub upload_file {
 		}
 	}
 
-	template 'index', {
+	template 'index',
+	  {
 		message    => $message,
 		info_color => $info_color
-	};
+	  };
 }
 
 sub count_files {
@@ -158,12 +157,29 @@ sub count_files {
 	}
 }
 
+sub randomposition {
+   my $chaine = $_[0];
+   return int rand length $chaine;
+   } 
+
+sub generate_aleatoire_key {
+	my $lenght = $_[0];
+	my $key;
+	my $i;
+	my $list_char =
+	  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	for ( $i = 1 ; $i < $lenght ; ++$i ) {
+		 my $temp_key = substr( $list_char, randomposition($list_char), 1 );
+		 $key = "$key$temp_key";
+	}
+	return $key;
+}
+
 #sub verif_taille {
 #	my $chemin_fic = param('file1');
 #	my $size_file = -s "/$chemin_fic";
 #	return $size_file;
 #}
 #--- /UPLOAD ----
-
 
 true;
