@@ -26,15 +26,16 @@ engines:
     encoding:  'utf8'
     start_tag: '[%'
     end_tag:   '%]'
+    plugin:
 
 plugins:
-  DBIC:
-    DbIntraBox:
-      schema_class: DB::intrabox
-      dsn: dbi:mysql:intrabox
-      user: root
-      pass: tnwadt22
-      options:
-        RaiseError: 1
-        PrintError: 1
-        mysql_enable_utf8: 1
+    DBIC:
+      DbIntraBox:
+        schema_class: DB::intrabox
+        dsn: dbi:mysql:intrabox
+        user: root
+        pass: tnwadt22
+        options:
+          RaiseError: 1
+          PrintError: 1
+          mysql_enable_utf8: 1
