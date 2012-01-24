@@ -34,6 +34,13 @@ post '/upload' => sub {
 	upload_file();
 };
 
+
+
+
+
+#----------Sub Routines --------
+
+#--- UPLOAD ----
 sub upload_file {
 
 	my $message;
@@ -156,5 +163,7 @@ sub count_files {
 #	my $size_file = -s "/$chemin_fic";
 #	return $size_file;
 #}
+#--- /UPLOAD ----
+
 
 true;
