@@ -30,7 +30,7 @@
 			</p>
 			<p>
 				<input id="acknowlegdement" name="acknowlegdement" type="checkbox">
-				<label for="acknowlegdement">Recevoir un accusÃ© de rÃ©ception Ã  chaque tÃ©lÃ©chargement</label>
+				<label for="acknowlegdement">Recevoir un accusé de réception Ã  chaque téléchargement</label>
 			</p>
 
 			<p>
