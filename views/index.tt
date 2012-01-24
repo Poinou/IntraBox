@@ -1,148 +1,52 @@
-  
-<!-- 
-    Credit goes to the Ruby on Rails team for this page 
-    has been heavily based on the default Rails page that is 
-    built with a scaffolded application.
+  		<div class="info [% info_color %]">
+			<h1>Information</h1>
+			<p>[% message %] </p>
+		</div> 
 
-    Thanks a lot to them for their work.
+		<form method="POST" action="[% request.uri_base %]/upload" enctype="multipart/form-data">
+		<fieldset>
+			<legend>Formulaire d'envoi de fichier</legend>
+			<p class="acenter" style="background-color: #f0f0f0; padding: 2px; width: 70%; margin-left: auto; margin-right: auto; text-align: center;">
 
-    See Ruby on Rails if you want a kickass framework in Ruby:
-    http://www.rubyonrails.org/
--->
+				<input id="file1" name="file1" type="file" value="Cliquez-ici">
+				<input id="file2" name="file2" type="file" value="Cliquez-ici">
+				<input id="file3" name="file3" type="file" value="Cliquez-ici">
+				<input id="file4" name="file4" type="file" value="Cliquez-ici">
+			</p>
+			<p class="acenter">
+				<label for="expiration_days">Expiration du fichier:</label>
 
-<div id="page">
-      <div id="sidebar">
-        <ul id="sidebar-items">
-          <li>
-            <h3>Join the community</h3>
-            <ul class="links">
+				<select id="expiration_days" name="expiration_days">
+					<option value="10" selected>10 jours</option>
+					<option value="10">15 jours</option>
+					<option value="10">20 jours</option>
+					<option value="10">30 jours</option>
+				</select>
+			</p>
 
-              <li><a href="http://perldancer.org/">PerlDancer</a></li>
-              <li><a href="http://twitter.com/PerlDancer/">Official Twitter</a></li>
-              <li><a href="http://github.com/sukria/Dancer/">GitHub Community</a></li>
-            </ul>
-          </li>
-          
-          <li>
-            <h3>Browse the documentation</h3>
+			<p>
+				<input id="downloads_report" name="downloads_report" type="checkbox">
+				<label for="downloads_report">Recevoir un rÃ©capitulatif des tÃ©lÃ©chargements</label>
+			</p>
+			<p>
+				<input id="acknowlegdement" name="acknowlegdement" type="checkbox">
+				<label for="acknowlegdement">Recevoir un accusÃ© de rÃ©ception Ã  chaque tÃ©lÃ©chargement</label>
+			</p>
 
-            <ul class="links">
-              <li><a
-              href="http://search.cpan.org/dist/Dancer/lib/Dancer/Introduction.pod">Introduction</a></li>
-              <li><a href="http://search.cpan.org/dist/Dancer/lib/Dancer/Cookbook.pod">Cookbook</a></li>
-              <li><a href="http://search.cpan.org/dist/Dancer/lib/Dancer/Deployment.pod">Deployment Guide</a></li>
-              <li><a
-              href="http://search.cpan.org/dist/Dancer/lib/Dancer/Tutorial.pod"
-              title="a tutorial to build a small blog engine with Dancer">Tutorial</a></li>
-            </ul>
-          </li>
+			<p>
+				<input id="password_protection" name="password_protection" type="checkbox">
+				<label for="password_protection">ProtÃ©ger par mot de passe:</label>
+				<input id="password" type="password">
+			</p>
+			<p>
+				<input id="comment_option" name="comment_option" type="checkbox">
+				<label for="comment_option">InsÃ©rer un commentaire:</label><br>
 
-          <li>
-            <h3>Your application's environment</h3>
-
-            <ul>
-                <li>Location: <code>C:\Users\abourgan\IntraBox</code></li>
-                <li>Template engine: <code><% settings.template %></code></li>
-                <li>Logger: <code><% settings.logger %></code></li>
-                <li>Environment: <code><% settings.environment %></code></li>
-            </ul>
-
-          </li>
-        </ul>
-
-      </div>
-
-      <div id="content">
-        <div id="header">
-          <h1>Perl is dancing</h1>
-          <h2>You&rsquo;ve joined the dance floor!</h2>
-        </div>
-
-        <div id="getting-started">
-          <h1>Getting started</h1>
-          <h2>Here&rsquo;s how to get dancing:</h2>
-                    
-          <h3><a href="#" id="about_env_link">About your application's environment</a></h3>
-
-          <div id="about-content" style="display: none;">
-            <table>
-                <tbody>
-                <tr>
-                    <td>Perl version</td>
-                    <td><tt><% perl_version %></tt></td>
-                </tr>
-                <tr>
-                    <td>Dancer version</td>
-                    <td><tt><% dancer_version %></tt></td>
-                </tr>
-                <tr>
-                    <td>Backend</td>
-                    <td><tt><% settings.apphandler %></tt></td>
-                </tr>
-                <tr>
-                    <td>Appdir</td>
-                    <td><tt>C:\Users\abourgan\IntraBox</tt></td>
-                </tr>
-                <tr>
-                    <td>Template engine</td>
-                    <td><tt><% settings.template %></tt></td>
-                </tr>
-                <tr>
-                    <td>Logger engine</td>
-                    <td><tt><% settings.logger %></tt></td>
-                </tr>
-                <tr>
-                    <td>Running environment</td>
-                    <td><tt><% settings.environment %></tt></td>
-                </tr>
-                </tbody>
-            </table>
-          </div>
-
-    <script type="text/javascript">
-    $('#about_env_link').click(function() {
-        $('#about-content').slideToggle('fast', function() {
-            // ok
-        });
-        return( false );
-    });
-    </script>
-
-
-          <ol>          
-            <li>
-              <h2>Tune your application</h2>
-
-              <p>
-              Your application is configured via a global configuration file,
-              <tt>config.yml</tt> and an "environment" configuration file,
-              <tt>environments/development.yml</tt>. Edit those files if you
-              want to change the settings of your application.
-              </p>
-            </li>
-
-            <li>
-              <h2>Add your own routes</h2>
-
-              <p>
-              The default route that displays this page can be removed,
-              it's just here to help you get started. The template used to
-              generate this content is located in 
-              <code>views/index.tt</code>.
-              You can add some routes to <tt>lib/IntraBox.pm</tt>. 
-              </p>
-            </li>
-
-            <li>
-                <h2>Enjoy web development again</h2>
-
-                <p>
-                Once you've made your changes, restart your standalone server
-                (bin/app.pl) and you're ready to test your web application.
-                </p>
-            </li>
-
-          </ol>
-        </div>
-      </div>
-    </div>
+				<textarea style="width: 80%; display: block; margin: 0 auto;" id="comment" type="comment"></textarea>
+			</p>
+			<p class="acenter">
+				<button class="submit" type="submit">Uploader!</button>
+			</p>
+			
+		</fielset>
+		</form>

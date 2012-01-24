@@ -1,22 +1,50 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
-<title>IntraBox</title>
-<link rel="stylesheet" href="<% request.uri_base %>/css/style.css" />
-
-<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript">/* <![CDATA[ */
-    !window.jQuery && document.write('<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"><\/script>')
-/* ]]> */</script>
-
+	<title>ShareX</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=[% settings.charset %]" />
+	<link rel="stylesheet" type="text/css" media="screen" href="[% request.uri_base %]/css/style.css" />
 </head>
 <body>
-<% content %>
-<div id="footer">
-Powered by <a href="http://perldancer.org/">Dancer</a> <% dancer_version %>
-</div>
+[% IF isAdmin %]
+	<style>
+	#leftbar { background-color: #EFB400; }
+	body { margin: 0 auto 0 10em; }
+	</style>
+	<div id="leftbar">
+		<a id="closebutton" href="[% request.uri_base %]/">x</a>
+		<h1>Vous êtes dans l'interface d'administration!</h1>
+		<menu>
+			<li>Téléchargements en cours</li>
+			<li>Gestion des fichiers non expirés</li>
+			<li>Gestion des groupes</li>
+
+			<li>Gestion des administrateurs</li>
+			<li>Statistiques</li>
+			<li>Supervision de dépose de fichier</li>
+			<li>Recherche</li>
+		</menu>
+	</div>
+[% END %]
+	<div id="topbar">
+		<h1><a href="[% request.uri_base %]/admin">ShareX</a></h1>
+
+		<h2>Système d'échange de fichiers</h2>
+		<div id="profile">Connecté sous:<br><em>[% user %]</em> (<a href="">Se déconnecter</a>)<br>Espace disque utilisé: 480mo/1000mo</div>
+	</div>
+	<div id="menubar">
+		<menu>
+
+			<li>Déposer un fichier</li>
+			<li>Créer une zone depôt</li>
+			<li>Gérer ses fichiers</li>
+			<li>Gérer ses zones de dépôt</li>
+			<li class="aide">Aide</li>
+		</menu>
+
+	</div>
+	<div id="corps">
+		[% content %]
+	</div>
 </body>
 </html>
