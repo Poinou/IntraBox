@@ -1,1 +1,7 @@
 [6624] error @0.000878> [hit #1]Supplied view (admin) was not found. in C:/Perl/site/lib/Dancer/Template/Abstract.pm l. 148
+[15516] error @0.127135> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98
+[16344] error @0.085252> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98
+[14248] error @0.098004> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98
+[4984] error @0.106916> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98
+[5348] error @0.087525> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98
+[8040] error @0.108375> [hit #2]request to /download crashed: Can't call method "push_header" on an undefined value at C:/Perl/site/lib/Dancer.pm line 395. in C:/Perl/site/lib/Dancer/Handler.pm l. 98

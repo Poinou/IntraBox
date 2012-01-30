@@ -1,6 +1,7 @@
   		<div class="info [% info_color %]">
 			<h1>Information</h1>
-			<p>[% message %] </p>
+			<p>[% message %] </p>		
+			
 		</div> 
 
 		<form method="POST" action="[% request.uri_base %]/upload" enctype="multipart/form-data">
@@ -26,21 +27,21 @@
 
 			<p>
 				<input id="downloads_report" name="downloads_report" type="checkbox">
-				<label for="downloads_report">Recevoir un rÃ©capitulatif des tÃ©lÃ©chargements</label>
+				<label for="downloads_report">Recevoir un récapitulatif des téléchargements</label>
 			</p>
 			<p>
 				<input id="acknowlegdement" name="acknowlegdement" type="checkbox">
-				<label for="acknowlegdement">Recevoir un accusé de réception Ã  chaque téléchargement</label>
+				<label for="acknowlegdement">Recevoir un accusé de réception à chaque téléchargement</label>
 			</p>
 
 			<p>
 				<input id="password_protection" name="password_protection" type="checkbox">
-				<label for="password_protection">ProtÃ©ger par mot de passe:</label>
+				<label for="password_protection">Protéger par mot de passe:</label>
 				<input id="password" type="password">
 			</p>
 			<p>
 				<input id="comment_option" name="comment_option" type="checkbox">
-				<label for="comment_option">InsÃ©rer un commentaire:</label><br>
+				<label for="comment_option">Insérer un commentaire:</label><br>
 
 				<textarea style="width: 80%; display: block; margin: 0 auto;" id="comment" type="comment"></textarea>
 			</p>
