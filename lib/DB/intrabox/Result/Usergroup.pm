@@ -71,8 +71,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id_usergroup");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 11:47:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fIJTj9ypay21X3BrxgE0Rw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 15:43:25
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oLuQxM63Jba+SfB9woWlnA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
