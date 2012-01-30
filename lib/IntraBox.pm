@@ -1,7 +1,7 @@
 package IntraBox;
 use Dancer ':syntax';
 use Digest::SHA1;
-#use strict;
+use strict;
 use warnings;
 use subroutine;
 use subroutine3;
@@ -29,8 +29,6 @@ $user_space_used = calcul_used_space($user);
 #Calcul de l'espace libre de user
 my $user_space_free = $user_size_space_limit - $user_space_used;
 
-
-
 #--------- ROUTEES -------
 get '/' => sub {
 	my $info_color = "info-vert";
@@ -53,9 +51,14 @@ post '/upload' => sub {
 	upload_file();
 };
 
-get '/download/:file' => sub {
-	my $param_file = "params->{file}";
+get '/download' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
 	download_file($param_file);
+};
+
+get '/downloadFile' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
+	sendFile($param_file);
 };
 
 get '/test' => sub {
@@ -63,21 +66,6 @@ get '/test' => sub {
 };
 
 #--------- /ROUTEES -------
-
-
-
-
-
-
-#sub verif_taille {
-#	my $chemin_fic = param('file1');
-#	my $size_file = -s "/$chemin_fic";
-#	return $size_file;
-#}
-
-#--- /UPLOAD ----
-
-
 
 
 #--- /Infos User ---
