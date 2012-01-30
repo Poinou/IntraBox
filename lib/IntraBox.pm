@@ -4,6 +4,10 @@ use Digest::SHA1;
 use strict;
 use warnings;
 
+use lib '.';
+use Data::FormValidator;
+use DB::intrabox;
+use DBIx::Class::FromValidators;
 our $VERSION = '0.1';
 
 #Récupération du nom
@@ -27,6 +31,10 @@ $user_space_used = calcul_used_space($user);
 my $user_space_free = $user_size_space_limit - $user_space_used;
 
 
+# Connexion à la base de données
+my $dsn           = "dbi:mysql:intrabox";
+my $schema = DB::intrabox->connect( $dsn, "root", "") or die "problem";
+
 
 #--------- ROUTEES -------
 get '/' => sub {
@@ -43,7 +51,73 @@ get '/' => sub {
 };
 
 get '/admin' => sub {
-	template 'admin', { isAdmin => $isAdmin };
+	redirect 'admin/download';
+};
+get '/admin/download' => sub {
+	template 'admin/download', { isAdmin => $isAdmin };
+};
+
+get '/admin/admin' => sub {
+	my @admins = $schema->resultset('User')->search({admin => true})->all;
+	template 'admin/admin', { isAdmin => $isAdmin, admins => \@admins };
+};
+
+post '/admin/admin/new' => sub {
+
+  # validation des paramètres
+  my $params = request->params;
+  my $msgs;
+  # recherche de l'admin à ajouter
+	my $admin = $schema->resultset('User')->search({login => param('login') })->first();
+	if (not defined $admin) {
+	    my $login = param('login');
+	    $msgs = {
+			alert => "Il n'y a pas d'utilisateur correspondant au login <strong>$login</strong>"
+		};
+	}
+	else {
+	    my $login = $admin->login;
+	    $msgs = {
+			info => "Vous venez d'ajouter l'administrateur <strong>$login</strong>"
+		};
+		$admin->update({ admin => true });
+	}
+	
+	my @admins = $schema->resultset('User')->search({admin => true})->all;
+	template 'admin/admin', 
+		{ isAdmin => $isAdmin, 
+			msgs => $msgs,
+			admins => \@admins 
+		};
+};
+
+get qr{/admin/admin/delete/(?<id>\d+)} => sub {
+	
+  	my $msgs;
+	my $id = captures->{'id'}; # le paramètre id est dans l'URL
+	delete params->{captures};
+	
+	# recherche de l'admin à supprimer
+	my $admin = $schema->resultset('User')->find($id);
+	if (not defined $admin) {
+	    $msgs = {
+			alert => "Il n'y a pas d'utilisateur à l'ID <strong>$id</strong>"
+		};
+	}
+	else {
+	    my $login = $admin->login;
+	    $msgs = {
+			warning => "Vous venez de retirer l'administrateur <strong>$login</strong>"
+		};
+		$admin->update({ admin => false });
+	}
+	
+	my @admins = $schema->resultset('User')->search({admin => true})->all;
+	template 'admin/admin', 
+		{ isAdmin => $isAdmin, 
+			msgs => $msgs,
+			admins => \@admins 
+		};
 };
 
 post '/upload' => sub {
