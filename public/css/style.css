@@ -115,7 +115,7 @@ legend {
 form p {
 	margin: 1em 0;
 }
-button.submit {
+button.submit_upload {
 	padding: 0.8em 2em 0.7em;
 /*	background-color: #F69D00; */
 	background: -moz-linear-gradient(center top, #FFD200, #FAC000 25%, #F69D00 50%, #FAC000 75%, #FFD200);
