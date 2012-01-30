@@ -6,9 +6,9 @@ CREATE SCHEMA IF NOT EXISTS `intrabox` DEFAULT CHARACTER SET utf8 ;
 USE `intrabox` ;
 
 -- -----------------------------------------------------
--- Table `intrabox`.`usergroups`
+-- Table `intrabox`.`usergroup`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `intrabox`.`usergroups` (
+CREATE  TABLE IF NOT EXISTS `intrabox`.`usergroup` (
   `id_usergroup` INT NOT NULL ,
   `rule_type` VARCHAR(45) NOT NULL ,
   `rule` VARCHAR(45) NOT NULL ,
@@ -20,9 +20,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `intrabox`.`admins`
+-- Table `intrabox`.`admin`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `intrabox`.`admins` (
+CREATE  TABLE IF NOT EXISTS `intrabox`.`admin` (
   `id_admin` INT NOT NULL ,
   `id_user` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id_admin`) )
@@ -40,9 +40,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `intrabox`.`deposits`
+-- Table `intrabox`.`deposit`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `intrabox`.`deposits` (
+CREATE  TABLE IF NOT EXISTS `intrabox`.`deposit` (
   `id_deposit` INT NOT NULL ,
   `id_user` VARCHAR(30) NOT NULL ,
   `download_code` VARCHAR(45) NOT NULL ,
@@ -70,9 +70,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `intrabox`.`files`
+-- Table `intrabox`.`file`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `intrabox`.`files` (
+CREATE  TABLE IF NOT EXISTS `intrabox`.`file` (
   `id_file` INT NOT NULL ,
   `id_deposit` INT NOT NULL ,
   `name` VARCHAR(60) NOT NULL ,
@@ -82,16 +82,16 @@ CREATE  TABLE IF NOT EXISTS `intrabox`.`files` (
   INDEX `fk_files_deposits` (`id_deposit` ASC) ,
   CONSTRAINT `fk_files_deposits`
     FOREIGN KEY (`id_deposit` )
-    REFERENCES `intrabox`.`deposits` (`id_deposit` )
+    REFERENCES `intrabox`.`deposit` (`id_deposit` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `intrabox`.`downloads`
+-- Table `intrabox`.`download`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `intrabox`.`downloads` (
+CREATE  TABLE IF NOT EXISTS `intrabox`.`download` (
   `id_download` INT NOT NULL ,
   `id_deposit` INT NOT NULL ,
   `id_file` INT NOT NULL ,
@@ -104,11 +104,19 @@ CREATE  TABLE IF NOT EXISTS `intrabox`.`downloads` (
   INDEX `fk_downloads_files1` (`id_file` ASC, `id_deposit` ASC) ,
   CONSTRAINT `fk_downloads_files1`
     FOREIGN KEY (`id_file` , `id_deposit` )
-    REFERENCES `intrabox`.`files` (`id_file` , `id_deposit` )
+    REFERENCES `intrabox`.`file` (`id_file` , `id_deposit` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `intrabox`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `intrabox`.`user` (
+  `id_user` int(11) NOT NULL,
+  `login` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
