@@ -27,7 +27,7 @@ sub recuperation_donnees_session_user {
 
 	my $user_group            = "eleves";
 	our $user_size_file_limit  = 100 * 1024 * 1024;
-	my $user_size_space_limit = 800 * 1024 * 1024;
+	my $user_size_space_limit = 900 * 1024 * 1024;
 	return ( $isAdmin, $user_group, $user_size_file_limit,
 		$user_size_space_limit );
 }
