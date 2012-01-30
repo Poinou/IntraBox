@@ -6,10 +6,7 @@ use DB::intrabox;
 
 # Connexion à la base de données
 my $dsn           = "dbi:mysql:intrabox";
-my $user_database = "root";
-my $password      = "tnwadt22";
-my $schema = DB::intrabox->connect( $dsn, $user_database, $password) or die "problem";
-
+my $schema = DB::intrabox->connect( $dsn, "", "") or die "problem";
 
 my @admins = $schema->resultset('Admin')->search({})->all;
 for my $admin (@admins) {
