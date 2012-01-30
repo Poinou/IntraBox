@@ -6,6 +6,7 @@ html {
 	font-size: 12px;
 	font-family: Tahoma;
 	color: #333333;
+	height: 100%;
 }
 
 body {
@@ -14,12 +15,20 @@ body {
 	position: relative;
 	width: 70em;
 	background-color: #ffffff;
+	height: 100%;
 }
 
+table { width: 100%; }
+th { 
+	border-bottom: 1px solid #dedede; }
 p, h1, h2, h3, h4, h5 { margin: 0; padding: 0 }
+a { color: #333333; }
 a:hover { text-decoration: none; }
 
+.aleft { text-align: left; }
 .acenter { text-align: center; }
+.aright { text-align: right; }
+
 /* Définition de la topbar */
 #topbar {
 	background-color: #44413B;
@@ -78,9 +87,9 @@ a:hover { text-decoration: none; }
 	cursor: pointer;
 	background-color: #fefefe;
 }
-#menubar menu li.aide {
-	background-color: #90BF80;
-}
+#menubar menu li a { text-decoration: none; color: #000000; }
+#menubar menu li.aide { background-color: #90BF80; }
+#menubar menu li.admin { background-color: #EFB400; }
 
 /* Définition du corps de page */
 #corps {
@@ -109,7 +118,7 @@ form p {
 button.submit {
 	padding: 0.8em 2em 0.7em;
 /*	background-color: #F69D00; */
-	background: -moz-linear-gradient(center top, #b8d8f2, #92bde0 25%, #3282c2 50%, #92bde0 75%, #b8d8f2);
+	background: -moz-linear-gradient(center top, #FFD200, #FAC000 25%, #F69D00 50%, #FAC000 75%, #FFD200);
 	background: -webkit-gradient(linear, center top, center bottom, from(#FFD200), color-stop(25%, #FAC000), color-stop(50%, #F69D00), color-stop(75%, #FAC000), to(#FFD200));
 	border-radius: 10px;
 	border: 1px solid #F69D00;
@@ -133,18 +142,21 @@ button.submit {
 	margin-top: -0.7em;
 	margin-bottom: 1em;
 	padding: 2px 1em;
-	border: 1px solid green;
 	display: inline-block;
 }
 .info-vert { border: 1px solid green; color: green; }
-.info-vert h1 { color: green; }
-.info-orange { border: 1px solid orange; }
-.info-orange h1 { color: orange; }
-.info-rouge { border: 1px solid red; }
-.info-rouge h1 { color: red; }
+.info-vert a { color: green; }
+.info-vert h1 { border: 1px solid green; color: green; }
+.info-orange h1 a { color: orange; }
+.info-orange { border: 1px solid orange; color: orange; }
+.info-orange h1 { border: 1px solid orange; color: orange; }
+.info-rouge a { color: red; }
+.info-rouge { border: 1px solid red; color: red; }
+.info-rouge h1 { border: 1px solid red; color: red; }
 
-/* Définition de la leftbar d'administration */
-#leftbar {
+
+/* Définition de la bar d'administration */
+#adminbar {
 	position: absolute;
 	right: -12em;
 	width: 10em;
@@ -153,30 +165,33 @@ button.submit {
 	padding: 1em;
 	word-wrap:break-word;
 	overflow: hidden;
+	background-color: #EFB400;
 }
-#leftbar h1 {
+#adminbar h1 {
 	color: #FFFFFF;
 	font-size: 1.1em;
 	margin-top: 1em;
 	margin-bottom: 2em;
 }
-#leftbar menu {
+#adminbar menu {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-#leftbar menu li {
+#adminbar menu li {
 	border-top: 1px solid black;
 	padding: 0.4em 0.5em 0.3em 0.5em;
 }
-#leftbar menu li:last-child {
+#adminbar menu li:last-child {
 	border-bottom: 1px solid black;
 }
-#leftbar menu li:hover {
+#adminbar menu li:hover {
 	background-color: #FFFFFF;
 	cursor: pointer;
 }
-#leftbar #closebutton {
+
+#adminbar menu li a { text-decoration: none; color: #000000; }
+#adminbar #closebutton {
 	display: block;
 	position: absolute;
 	text-decoration: none;
@@ -186,7 +201,7 @@ button.submit {
 	line-height: 1em;
 	border: 1px solid black;
 }
-#leftbar #closebutton:hover {
+#adminbar #closebutton:hover {
 	text-decoration: none;
 	cursor: pointer;
 	background-color: #FFFFFF;
