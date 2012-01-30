@@ -1,4 +1,4 @@
-package DB::intrabox::Result::Admin;
+package DB::intrabox::Result::User;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -12,38 +12,38 @@ __PACKAGE__->load_components("FromValidators", "InflateColumn::DateTime", "Core"
 
 =head1 NAME
 
-DB::intrabox::Result::Admin
+DB::intrabox::Result::User
 
 =cut
 
-__PACKAGE__->table("admin");
+__PACKAGE__->table("user");
 
 =head1 ACCESSORS
 
-=head2 id_admin
+=head2 id_user
 
   data_type: 'integer'
   is_nullable: 0
 
-=head2 id_user
+=head2 login
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: 45
 
 =cut
 
 __PACKAGE__->add_columns(
-  "id_admin",
-  { data_type => "integer", is_nullable => 0 },
   "id_user",
-  { data_type => "varchar", is_nullable => 0, size => 45 },
+  { data_type => "integer", is_nullable => 0 },
+  "login",
+  { data_type => "varchar", is_nullable => 1, size => 45 },
 );
-__PACKAGE__->set_primary_key("id_admin");
+__PACKAGE__->set_primary_key("id_user");
 
 
 # Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 11:47:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PkwCfkzY+d0wdx5Z9b5kng
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oqUM7lHg5b7Yi6gVYooKzw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

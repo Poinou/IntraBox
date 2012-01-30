@@ -16,7 +16,7 @@ DB::intrabox::Result::Download
 
 =cut
 
-__PACKAGE__->table("downloads");
+__PACKAGE__->table("download");
 
 =head1 ACCESSORS
 
@@ -107,8 +107,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 14:46:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JV7rR7H3cFnHXrcQum1WvQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 11:47:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/4IeucierOI4THtoGgc75g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

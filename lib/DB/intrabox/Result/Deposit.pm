@@ -16,7 +16,7 @@ DB::intrabox::Result::Deposit
 
 =cut
 
-__PACKAGE__->table("deposits");
+__PACKAGE__->table("deposit");
 
 =head1 ACCESSORS
 
@@ -183,8 +183,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-24 14:46:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HbQXcbSSgYDUz5x49HBUwg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 11:47:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:l+ueSymM0rCJm1s6zrAAdw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
