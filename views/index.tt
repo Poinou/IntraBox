@@ -46,7 +46,7 @@
 				<textarea style="width: 80%; display: block; margin: 0 auto;" id="comment" type="comment"></textarea>
 			</p>
 			<p class="acenter">
-				<button class="submit" type="submit">Uploader!</button>
+				<button class="submit_upload" type="submit">Uploader!</button>
 			</p>
 			
 		</fielset>
