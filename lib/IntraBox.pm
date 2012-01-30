@@ -11,9 +11,9 @@ use lib '.';
 use DB::intrabox;
 use DBI;
 
-use lib '.';
+
 use Data::FormValidator;
-use DB::intrabox;
+
 use DBIx::Class::FromValidators;
 our $VERSION = '0.1';
 
@@ -42,10 +42,6 @@ $user_space_used = calcul_used_space($user);
 
 #Calcul de l'espace libre de user
 my $user_space_free = $user_size_space_limit - $user_space_used;
-
-# Connexion à la base de données
-my $dsn           = "dbi:mysql:intrabox";
-my $schema = DB::intrabox->connect( $dsn, "root", "") or die "problem";
 
 #--------- ROUTEES -------
 get '/' => sub {
@@ -239,16 +235,16 @@ sub upload_file {
 				$hash_names[$i] = generate_aleatoire_key(15);
 
 				#Vérification de l'unicité de la clé du fichier
-				my @liste_file =
-				  $schema->resultset('File')
-				  ->search( { name_on_disk => "$hash_names[$i]", } );
-				while (@liste_file) {
-					$hash_names[$i] = generate_aleatoire_key(15);
-					@liste_file =
-					  $schema->resultset('File')
-					  ->search( { name_on_disk => "$hash_names[$i]", } )
-					  ;
-				}
+#				my @liste_file =
+#				  $schema->resultset('File')
+#				  ->search( { name_on_disk => "$hash_names[$i]", } );
+#				while (@liste_file) {
+#					$hash_names[$i] = generate_aleatoire_key(15);
+#					@liste_file =
+#					  $schema->resultset('File')
+#					  ->search( { name_on_disk => "$hash_names[$i]", } )
+#					  ;
+#				}
 
 				$total_size = $total_size + $size_files[$i];
 
