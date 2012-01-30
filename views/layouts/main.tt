@@ -8,26 +8,25 @@
 <body>
 [% IF isAdmin %]
 	<style>
-	#leftbar { background-color: #EFB400; }
 	body { margin: 0 auto 0 10em; }
 	</style>
-	<div id="leftbar">
+	<div id="adminbar">
 		<a id="closebutton" href="[% request.uri_base %]/">x</a>
 		<h1>Vous êtes dans l'interface d'administration!</h1>
 		<menu>
-			<li>Téléchargements en cours</li>
-			<li>Gestion des fichiers non expirés</li>
-			<li>Gestion des groupes</li>
+			<li><a href="[% request.uri_base %]/admin/download">Téléchargements en cours</a></li>
+			<li><a href="[% request.uri_base %]/admin/file">Gestion des fichiers non expir�s</a></li>
+			<li><a href="[% request.uri_base %]/admin/group">Gestion des groupes</a></li>
 
-			<li>Gestion des administrateurs</li>
-			<li>Statistiques</li>
-			<li>Supervision de dépose de fichier</li>
-			<li>Recherche</li>
+			<li><a href="[% request.uri_base %]/admin/admin">Gestion des administrateurs</a></li>
+			<li><a href="[% request.uri_base %]/admin/stats">Statistiques</a></li>
+			<li><a href="[% request.uri_base %]/admin/">Supervision de dépose de fichier</a></li>
+			<li><a href="[% request.uri_base %]/admin/search">Recherche</a></li>
 		</menu>
 	</div>
 [% END %]
 	<div id="topbar">
-		<h1><a href="[% request.uri_base %]/admin">ShareX</a></h1>
+		<h1><a href="[% request.uri_base %]/">IntraBox</a></h1>
 
 		<h2>Système d'échange de fichiers</h2>
 		<div id="profile">Connecté sous:<br><em>[% user %]</em> (<a href="">Se déconnecter</a>)<br>
@@ -35,12 +34,12 @@
 	</div>
 	<div id="menubar">
 		<menu>
-
-			<li>Déposer un fichier</li>
-			<li>Créer une zone depôt</li>
-			<li>Gérer ses fichiers</li>
-			<li>Gérer ses zones de dépôt</li>
-			<li class="aide">Aide</li>
+			<li><a href="[% request.uri_base %]/">Déposer un fichier</a></li>
+			<li><a href="[% request.uri_base %]/area/new">Créer une zone depôt</a></li>
+			<li><a href="[% request.uri_base %]/file">Gérer ses fichiers</a></li>
+			<li><a href="[% request.uri_base %]/area">Gérer ses zones de dépôt</a></li>
+			<li class="aide"><a href="[% request.uri_base %]/help">Aide</a></li>
+			<li class="admin"><a href="[% request.uri_base %]/admin">Administration</a></li>
 		</menu>
 
 	</div>
