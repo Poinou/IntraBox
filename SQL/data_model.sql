@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS `intrabox`.`deposit` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`deposit` (
   `id_deposit` INT(11) NOT NULL ,
-  `id_user` VARCHAR(30) NOT NULL ,
+  `id_user` INT(11) NOT NULL ,
   `download_code` VARCHAR(45) NOT NULL ,
   `area_access_code` VARCHAR(45) NULL DEFAULT NULL ,
   `area_to_email` VARCHAR(45) NULL DEFAULT NULL ,
@@ -54,17 +54,16 @@ CREATE  TABLE IF NOT EXISTS `intrabox`.`deposit` (
   `created_date` DATE NOT NULL ,
   `created_ip` VARCHAR(19) NOT NULL ,
   `created_useragent` VARCHAR(150) NOT NULL ,
-  `user_id_user` INT(11) NOT NULL ,
-  PRIMARY KEY (`id_deposit`, `id_status`, `user_id_user`) ,
+  PRIMARY KEY (`id_deposit`, `id_user`, `id_status`) ,
   INDEX `fk_deposits_status1` (`id_status` ASC) ,
-  INDEX `fk_deposit_user1` (`user_id_user` ASC) ,
+  INDEX `fk_deposit_user1` (`id_user` ASC) ,
   CONSTRAINT `fk_deposits_status1`
     FOREIGN KEY (`id_status` )
     REFERENCES `intrabox`.`status` (`id_status` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_deposit_user1`
-    FOREIGN KEY (`user_id_user` )
+    FOREIGN KEY (`id_user` )
     REFERENCES `intrabox`.`user` (`id_user` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
