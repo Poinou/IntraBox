@@ -11,7 +11,7 @@ USE `intrabox` ;
 DROP TABLE IF EXISTS `intrabox`.`status` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`status` (
-  `id_status` INT(11) NOT NULL ,
+  `id_status` INT(11) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id_status`) )
 ENGINE = InnoDB
@@ -24,7 +24,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `intrabox`.`user` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`user` (
-  `id_user` INT(11) NOT NULL ,
+  `id_user` INT(11) NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(45) NOT NULL ,
   `admin` TINYINT(1) NOT NULL DEFAULT false ,
   PRIMARY KEY (`id_user`) )
@@ -38,7 +38,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `intrabox`.`deposit` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`deposit` (
-  `id_deposit` INT(11) NOT NULL ,
+  `id_deposit` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_user` INT(11) NOT NULL ,
   `download_code` VARCHAR(45) NOT NULL ,
   `area_access_code` VARCHAR(45) NULL DEFAULT NULL ,
@@ -77,7 +77,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `intrabox`.`file` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`file` (
-  `id_file` INT(11) NOT NULL ,
+  `id_file` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_deposit` INT(11) NOT NULL ,
   `name` VARCHAR(60) NOT NULL ,
   `size` FLOAT NOT NULL ,
@@ -99,7 +99,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `intrabox`.`download` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`download` (
-  `id_download` INT(11) NOT NULL ,
+  `id_download` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_deposit` INT(11) NOT NULL ,
   `id_file` INT(11) NOT NULL ,
   `ip` VARCHAR(19) NOT NULL ,
@@ -124,7 +124,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `intrabox`.`usergroup` ;
 
 CREATE  TABLE IF NOT EXISTS `intrabox`.`usergroup` (
-  `id_usergroup` INT(11) NOT NULL ,
+  `id_usergroup` INT(11) NOT NULL AUTO_INCREMENT ,
   `rule_type` VARCHAR(45) NOT NULL ,
   `rule` VARCHAR(45) NOT NULL ,
   `quota` TINYINT(4) NOT NULL ,

@@ -1,0 +1,28 @@
+[% IF !isAdmin %]
+  		<div class="info info-rouge">
+			<h1>Accès refusé</h1>
+			<p>Cette section est réservée aux administrateurs. <a href="[% request.uri_base %]/">Cliquez-ici</a> pour retourner à l'application.</p>
+		</div>
+[% END %]
+[% IF isAdmin %]
+ 		<div class="info info-vert">
+			<h1>Information</h1>
+			<p>Voici la liste des administrateurs.</p>
+		</div>
+		
+		<fieldset>
+			<legend>Liste des administrateurs</legend>
+		<table>
+			<tr>
+				<th class="aleft">Login</th>
+				<th style="width: 10em;">Action</th>
+			</tr>
+			[% FOREACH admin IN admins %]
+			<tr>
+				<td>[% admin.login %]</td>
+				<td class="acenter"><a href="[% request.uri_base %]/admin/admins/delete/[% admin.id_user %]">Supprimer</a></td>
+			</tr>
+			[% END %]
+		</table>
+		</fieldset>
+[% END %]
