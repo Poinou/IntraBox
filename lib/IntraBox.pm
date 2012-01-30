@@ -26,8 +26,6 @@ $user_space_used = calcul_used_space($user);
 #Calcul de l'espace libre de user
 my $user_space_free = $user_size_space_limit - $user_space_used;
 
-
-
 #--------- ROUTEES -------
 get '/' => sub {
 	my $info_color = "info-vert";
@@ -50,9 +48,14 @@ post '/upload' => sub {
 	upload_file();
 };
 
-get '/download/:file' => sub {
-	my $param_file = "params->{file}";
+get '/download' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
 	download_file($param_file);
+};
+
+get '/downloadFile' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
+	sendFile($param_file);
 };
 
 get '/test' => sub {
@@ -207,12 +210,6 @@ sub generate_aleatoire_key {
 	return $key;
 }
 
-#sub verif_taille {
-#	my $chemin_fic = param('file1');
-#	my $size_file = -s "/$chemin_fic";
-#	return $size_file;
-#}
-
 #--- /UPLOAD ----
 
 #--- DOWNLOAD ----
@@ -266,13 +263,19 @@ sub download_file {
 		$message =
 "Le téléchargement du fichier $file_name déposé par $file_author est sur le point de commencer. Si rien ne se passe, vous pouvez cliquer sur le lien suivant : $file_URL";
 
-		template 'download', { message => $message };
+		template 'download',
+		  {
+			message      => $message,
+			FileNameDisk => $file_name_disk
+		  };
 
-		send_file(
-			"/Upload/$file_name_disk",
-			filename => "$file_name"
-		);
 	}
+}
+
+sub sendFile {
+	my $file_name_disk = $_[0];
+	my $file_name      = "Truck.png";
+	send_file( "/Upload/$file_name_disk", filename => "$file_name" );
 }
 
 #--- /DOWNLOAD ----
