@@ -23,6 +23,7 @@ __PACKAGE__->table("usergroup");
 =head2 id_usergroup
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 rule_type
@@ -56,7 +57,7 @@ __PACKAGE__->table("usergroup");
 
 __PACKAGE__->add_columns(
   "id_usergroup",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "rule_type",
   { data_type => "varchar", is_nullable => 0, size => 45 },
   "rule",
@@ -71,8 +72,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id_usergroup");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 15:43:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oLuQxM63Jba+SfB9woWlnA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 16:35:31
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OkmAPzztyjA+609q0wFkGQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
