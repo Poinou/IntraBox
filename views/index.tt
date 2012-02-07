@@ -37,13 +37,13 @@
 			<p>
 				<input id="password_protection" name="password_protection" type="checkbox">
 				<label for="password_protection">Protéger par mot de passe:</label>
-				<input id="password" type="password">
+				<input id="password" name="password" type="password">
 			</p>
 			<p>
 				<input id="comment_option" name="comment_option" type="checkbox">
 				<label for="comment_option">Insérer un commentaire:</label><br>
 
-				<textarea style="width: 80%; display: block; margin: 0 auto;" id="comment" type="comment"></textarea>
+				<textarea style="width: 80%; display: block; margin: 0 auto;" id="comment" name="comment" type="comment"></textarea>
 			</p>
 			<p class="acenter">
 				<button class="submit" type="submit">Uploader!</button>
