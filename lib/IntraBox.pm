@@ -43,13 +43,39 @@ $user_space_used = calcul_used_space($user);
 #Calcul de l'espace libre de user
 my $user_space_free = $user_size_space_limit - $user_space_used;
 
+before sub {
+	#get the remote user login - must be $ENV{'REMOTE_USER'}
+	my $login = "jgirault";
+
+	#if there is no session, log the user
+	if (not session 'id_user') {
+		#try to find user in DB, else create it
+	    my $user = $schema->resultset('User')->find_or_create(
+	    	{
+	      		login => $login,
+	      		admin  => false,
+	    	},
+	    	{ key => 'login_UNIQUE' }
+	  	);
+
+	  	#store the session
+	  	session id_user => $user->id_user;
+	  	session	login => $user->login;
+	  	session	isAdmin => $user->admin;
+	  #	session usedSpace => $userUsedSpace->count;
+	}
+  	return 0;
+};
+
 #--------- ROUTEES -------
 get '/' => sub {
 	my $info_color = "info-vert";
+	my $sess = session;
 	my $message    =
 "Vous pouvez uploader vos fichiers en renseignant tous les champs nécessaires";
 	template 'index',
 	  {
+	  	sess				  => $sess,
 		info_color            => $info_color,
 		message               => $message,
 		user_space_used       => ( $user_space_used / ( 1024 * 1024 ) ),
