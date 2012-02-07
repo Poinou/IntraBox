@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="[% request.uri_base %]/css/style.css" />
 </head>
 <body>
-[% IF isAdmin %]
+[% IF sess.isAdmin %]
 	<style>
 	body { margin: 0 auto 0 10em; }
 	</style>
@@ -15,7 +15,7 @@
 		<h1>Vous êtes dans l'interface d'administration!</h1>
 		<menu>
 			<li><a href="[% request.uri_base %]/admin/download">Téléchargements en cours</a></li>
-			<li><a href="[% request.uri_base %]/admin/file">Gestion des fichiers non expir�s</a></li>
+			<li><a href="[% request.uri_base %]/admin/file">Gestion des fichiers non expirés</a></li>
 			<li><a href="[% request.uri_base %]/admin/group">Gestion des groupes</a></li>
 
 			<li><a href="[% request.uri_base %]/admin/admin">Gestion des administrateurs</a></li>
@@ -25,12 +25,18 @@
 		</menu>
 	</div>
 [% END %]
+<!--
+<h1>Variables de session</h1>
+[% FOREACH key IN sess.keys %]
+[% key %] => [% sess.$key %]<br>
+[% END %]
+-->
 	<div id="topbar">
 		<h1><a href="[% request.uri_base %]/">IntraBox</a></h1>
 
 		<h2>Système d'échange de fichiers</h2>
-		<div id="profile">Connecté sous:<br><em>[% user %]</em> (<a href="">Se déconnecter</a>)<br>
-		Espace disque utilisé: [% user_space_used %]mo/[% user_size_space_limit %]mo</div>
+		<div id="profile">Connecté sous:<br><em>[% sess.login %]</em> (<a href="">Se déconnecter</a>)<br>
+		Espace disque utilisé: [% sess.usedSpace %]mo/[% user_size_space_limit %]mo</div>
 	</div>
 	<div id="menubar">
 		<menu>
@@ -39,7 +45,9 @@
 			<li><a href="[% request.uri_base %]/gestionFichiers">Gérer ses fichiers</a></li>
 			<li><a href="[% request.uri_base %]/area">Gérer ses zones de dépôt</a></li>
 			<li class="aide"><a href="[% request.uri_base %]/help">Aide</a></li>
+			[% IF sess.isAdmin %]
 			<li class="admin"><a href="[% request.uri_base %]/admin">Administration</a></li>
+			[% END %]
 		</menu>
 
 	</div>

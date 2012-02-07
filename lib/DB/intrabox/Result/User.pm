@@ -49,6 +49,7 @@ __PACKAGE__->add_columns(
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id_user");
+__PACKAGE__->add_unique_constraint("login_UNIQUE", ["login"]);
 
 =head1 RELATIONS
 
@@ -68,8 +69,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 16:35:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YSzd87+Gmm6Qjv4xVkGyaQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 17:27:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vUOth4wUi+IlBzuYwX87dg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

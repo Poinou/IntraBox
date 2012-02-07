@@ -108,8 +108,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 16:35:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:m2ubffgG/qBdtw4+pm6KUQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 17:27:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9akp+3tBWaO1v21At62nkA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

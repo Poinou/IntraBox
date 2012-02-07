@@ -1,17 +1,38 @@
-[% IF !isAdmin %]
+[% IF !sess.isAdmin %]
   		<div class="info info-rouge">
 			<h1>Accès refusé</h1>
 			<p>Cette section est réservée aux administrateurs. <a href="[% request.uri_base %]/">Cliquez-ici</a> pour retourner à l'application.</p>
 		</div>
 [% END %]
-[% IF isAdmin %]
+[% IF sess.isAdmin %]
+	[% IF msgs.info %]
  		<div class="info info-vert">
 			<h1>Information</h1>
-			<p>Voici la liste des administrateurs.</p>
+			<p>[% msgs.info %]</p>
 		</div>
-		
-		<fieldset>
-			<legend>Liste des administrateurs</legend>
+	[% END %]
+	[% IF msgs.warning %]
+ 		<div class="info info-orange">
+			<h1>Avertissement</h1>
+			<p>[% msgs.warning %]</p>
+		</div>
+	[% END %]
+	[% IF msgs.alert %]
+ 		<div class="info info-rouge">
+			<h1>Alerte</h1>
+			<p>[% msgs.alert %]</p>
+		</div>
+	[% END %]
+	
+		<form method="POST" action="[% request.uri_base %]/admin/admin/new">
+		<fieldset style="margin-bottom: 2em;">
+			<legend>Ajouter un administrateur</legend>
+			<p>
+				<label for="login">Login:</label>
+				<input id="login" name="login" type="login">
+				<button class="submit" type="submit">Ajouter comme administrateur</button>
+			</p>
+		</fieldset>
 		<table>
 			<tr>
 				<th class="aleft">Login</th>
@@ -20,9 +41,8 @@
 			[% FOREACH admin IN admins %]
 			<tr>
 				<td>[% admin.login %]</td>
-				<td class="acenter"><a href="[% request.uri_base %]/admin/admins/delete/[% admin.id_user %]">Supprimer</a></td>
+				<td class="acenter"><a href="[% request.uri_base %]/admin/admin/delete/[% admin.id_user %]">Supprimer</a></td>
 			</tr>
 			[% END %]
 		</table>
-		</fieldset>
 [% END %]

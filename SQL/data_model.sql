@@ -27,7 +27,8 @@ CREATE  TABLE IF NOT EXISTS `intrabox`.`user` (
   `id_user` INT(11) NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(45) NOT NULL ,
   `admin` TINYINT(1) NOT NULL DEFAULT false ,
-  PRIMARY KEY (`id_user`) )
+  PRIMARY KEY (`id_user`) ,
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

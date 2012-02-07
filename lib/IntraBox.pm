@@ -46,6 +46,44 @@ $user_space_used = calcul_used_space($user);
 #Calcul de l'espace libre de user
 my $user_space_free = $user_size_space_limit - $user_space_used;
 
+my $sess;
+hook 'before' => sub {
+	#get the remote user login - must be $ENV{'REMOTE_USER'}
+	my $login = "jgirault";
+	my $user;
+
+	#if there is no session, log the user
+	if (not session 'id_user') {
+		#try to find user in DB, else create it
+	    $user = $schema->resultset('User')->find_or_create(
+	    	{
+	      		login => $login,
+	      		admin  => false,
+	    	},
+	    	{ key => 'login_UNIQUE' }
+	  	);
+
+	  	#store the session
+	  	session id_user => $user->id_user;
+	  	session	login => $user->login;
+	  	session	isAdmin => $user->admin;
+	}
+	  	#calculate the space used by the user
+		my $usedSpace = 0;
+		my $deposits = $schema->resultset('Deposit')->search({ id_user =>  $user->id_user });
+  		while (my $deposit = $deposits->next) {
+  			my @files = $deposit->files;
+  			for my $file (@files) {
+    			if ($file->on_server) {
+    				$usedSpace += $file->size;
+    			}
+  			}
+  		}
+	  	session usedSpace => $usedSpace;
+	  	$sess = session;
+  	return 0;
+};
+
 #--------- ROUTEES -------
 get '/' => sub {
 	my $info_color = "info-vert";
@@ -53,6 +91,7 @@ get '/' => sub {
 "Vous pouvez uploader vos fichiers en renseignant tous les champs nécessaires";
 	template 'index',
 	  {
+	  	sess				  => $sess,
 		info_color            => $info_color,
 		message               => $message,
 		user_space_used       => ( $user_space_used / ( 1024 * 1024 ) ),
@@ -64,12 +103,12 @@ get '/admin' => sub {
 	redirect 'admin/download';
 };
 get '/admin/download' => sub {
-	template 'admin/download', { isAdmin => $isAdmin };
+	template 'admin/download', { sess => $sess };
 };
 
 get '/admin/admin' => sub {
 	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
-	template 'admin/admin', { isAdmin => $isAdmin, admins => \@admins };
+	template 'admin/admin', { sess => $sess, admins => \@admins };
 };
 
 post '/admin/admin/new' => sub {
@@ -100,7 +139,7 @@ post '/admin/admin/new' => sub {
 	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
 	template 'admin/admin',
 	  {
-		isAdmin => $isAdmin,
+		sess => $sess,
 		msgs    => $msgs,
 		admins  => \@admins
 	  };
@@ -131,7 +170,7 @@ get qr{/admin/admin/delete/(?<id>\d+)} => sub {
 	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
 	template 'admin/admin',
 	  {
-		isAdmin => $isAdmin,
+		sess => $sess,
 		msgs    => $msgs,
 		admins  => \@admins
 	  };
