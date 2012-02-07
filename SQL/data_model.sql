@@ -83,6 +83,7 @@ CREATE  TABLE IF NOT EXISTS `intrabox`.`file` (
   `name` VARCHAR(60) NOT NULL ,
   `size` FLOAT NOT NULL ,
   `on_server` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `name_on_disk` VARCHAR(60) NOT NULL ,
   PRIMARY KEY (`id_file`, `id_deposit`) ,
   INDEX `fk_files_deposits` (`id_deposit` ASC) ,
   CONSTRAINT `fk_files_deposits`

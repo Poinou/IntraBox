@@ -3,19 +3,30 @@ use Dancer ':syntax';
 use Digest::SHA1;
 use strict;
 use warnings;
+use subroutine;
+use subroutine3;
+use Class::Date qw(:errors date localdate gmdate now -DateParse);
 
 use lib '.';
 use Data::FormValidator;
 use DB::intrabox;
+use DBI;
+
 use DBIx::Class::FromValidators;
 our $VERSION = '0.1';
 
+# Connexion à la base de données
+my $dsn    = "dbi:mysql:intrabox";
+my $schema = DB::intrabox->connect( $dsn, "", "" ) or die "problem";
+
 #Récupération du nom
 my $user = $ENV{'REMOTE_USER'};
+$user = "abourgan";
 
 #Vérification si il est admin
 #Récupération du groupe dans lequel il est
 #Récupération de la taille maximale de son espace personnel et fichier
+my $id_user;
 my $isAdmin;
 my $user_group;
 my $user_size_file_limit;
@@ -34,6 +45,7 @@ my $user_space_free = $user_size_space_limit - $user_space_used;
 # Connexion à la base de données
 my $dsn           = "dbi:mysql:intrabox";
 my $schema = DB::intrabox->connect( $dsn, "root", "") or die "problem";
+
 
 
 #--------- ROUTEES -------
@@ -121,12 +133,18 @@ get qr{/admin/admin/delete/(?<id>\d+)} => sub {
 };
 
 post '/upload' => sub {
+
 	upload_file();
 };
 
-get '/download/:file' => sub {
-	my $param_file = "params->{file}";
+get '/download' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
 	download_file($param_file);
+};
+
+get '/downloadFile' => sub {
+	my $param_file = "iF87pzYbxcmSsr";
+	donwload_file_user($param_file);
 };
 
 get '/test' => sub {
@@ -134,8 +152,6 @@ get '/test' => sub {
 };
 
 #--------- /ROUTEES -------
-
-#----------Sub Routines --------
 
 #--- UPLOAD ----
 sub upload_file {
@@ -158,8 +174,43 @@ sub upload_file {
 		my @name_files;
 		my @hash_names;
 		my $total_size;
+		my $id_deposit;
 
 		my $controle_valid = 1;
+
+		my $expiration_days;
+		my $downloads_report;
+		my $acknowlegdement;
+		my $password_protection;
+		my $password;
+		my $comment_option;
+		my $comment;
+		my $current_date;
+		my $expiration_date;
+		my $expiration_days_date;
+
+		#------- Phase de récupération de tous les paramètres -------
+		$expiration_days  = param("expiration_days");
+		$downloads_report = param("downloads_report");
+		if ( $downloads_report eq "on" ) { $downloads_report = true }
+		else { $downloads_report = false }
+		$acknowlegdement = param("acknowlegdement");
+		if ( $acknowlegdement eq "on" ) { $acknowlegdement = true }
+		else { $acknowlegdement = false }
+		$password_protection = param("password_protection");
+		if ( $password_protection eq "on" ) { $password_protection = true }
+		else { $password_protection = false }
+		if ($password_protection) { $password = param("password"); }
+		$comment_option = param("comment_option");
+		if ( $comment_option eq "on" ) { $comment_option = true }
+		else { $comment_option = false }
+		if ($comment_option) { $comment = param("comment"); }
+		$current_date         = Class::Date->new;
+		$current_date         = now;
+		$expiration_date      = Class::Date->new;
+		$expiration_days_date =
+		  Class::Date->new( [ 0000, 00, "$expiration_days", 00, 00, 00 ] );
+		$expiration_date = $current_date + $expiration_days_date;
 
 		#------- Phase d'upload de tous les fichiers -------
 		for ( $i = 1 ; $i <= $number_files ; $i++ ) {
@@ -186,8 +237,19 @@ sub upload_file {
 				#				my $sha1 = Digest::SHA1->new;
 				#				$sha1->add("$name_files[$i]");
 				#				$hash_names[$i] = $sha1->hexdigest;
-				my $key = generate_aleatoire_key(15);
-				$hash_names[$i] = $key;
+				$hash_names[$i] = generate_aleatoire_key(15);
+
+				#Vérification de l'unicité de la clé du fichier
+#				my @liste_file =
+#				  $schema->resultset('File')
+#				  ->search( { name_on_disk => "$hash_names[$i]", } );
+#				while (@liste_file) {
+#					$hash_names[$i] = generate_aleatoire_key(15);
+#					@liste_file =
+#					  $schema->resultset('File')
+#					  ->search( { name_on_disk => "$hash_names[$i]", } )
+#					  ;
+#				}
 
 				$total_size = $total_size + $size_files[$i];
 
@@ -232,15 +294,76 @@ sub upload_file {
 
 				$message = "Upload terminé des fichiers : $temp_message";
 
+				#Création d'une clé de dépôt
+				my $deposit_key = generate_aleatoire_key(19);
+
+				#Vérification de l'unicité de la clé
+				my @liste_deposit =
+				  $schema->resultset('Deposit')
+				  ->search( { download_code => "$deposit_key", } );
+				while (@liste_deposit) {
+					$deposit_key   = generate_aleatoire_key(19);
+					@liste_deposit =
+					  $schema->resultset('Deposit')
+					  ->search( { download_code => "$deposit_key", } );
+				}
+
+				#Ecriture dans la base de données
+				my @liste_user =
+				  $schema->resultset('User')->search( { login => "$user", } );
+				for my $user_liste (@liste_user) {
+					$id_user = $user_liste->id_user;
+				}
+
+				my $new_deposit = $schema->resultset('Deposit')->create(
+					{
+						id_user              => "$id_user",
+						download_code        => "$deposit_key",
+						id_status            => "1",
+						expiration_date      => $expiration_date,
+						expiration_days      => $expiration_days,
+						opt_acknowledgement  => $acknowlegdement,
+						opt_downloads_report => $downloads_report,
+						created_date         => $current_date,
+						created_ip           => "192.45.12.12",
+						created_useragent    => "Mozilla",
+						opt_comment          => $comment,
+						opt_password         => $password,
+					}
+				);
+
+				#Recherche de l'id_deposit
+				my @liste_deposit2 =
+				  $schema->resultset('Deposit')
+				  ->search( { download_code => "$deposit_key", } );
+				for my $deposit_liste (@liste_deposit2) {
+					$id_deposit = $deposit_liste->id_deposit;
+				}
+
+				#Ecriture dans la base de données des fichiers
+				my $k;
+				for ( $k = 1 ; $k <= $number_files ; $k++ ) {
+					my $new_file = $schema->resultset('File')->create(
+						{
+							id_deposit => $id_deposit,
+							name       => $name_files[$k],
+							size       => $size_files[$k],
+
+							#name_on_disk => $hash_names[$k],
+							on_server => "1",
+						}
+					);
+				}
+
 			}
 		}
 	}
 
-	template 'index',
-	  {
+	template 'index', {
 		message    => $message,
-		info_color => $info_color
-	  };
+		info_color => $info_color,
+
+	};
 }
 
 sub count_files {
@@ -279,101 +402,6 @@ sub generate_aleatoire_key {
 		$key = "$key$temp_key";
 	}
 	return $key;
-}
-
-#sub verif_taille {
-#	my $chemin_fic = param('file1');
-#	my $size_file = -s "/$chemin_fic";
-#	return $size_file;
-#}
-
-#--- /UPLOAD ----
-
-#--- DOWNLOAD ----
-
-sub download_file {
-	my $file_name_disk = $_[0];
-	my $file_exist     = true;
-	my $file_available = true;
-
-	my $file_author;
-	$file_author = "abourgan";
-	my $file_size;
-	my $file_name;
-
-	my $message;
-
-	#- Initialisations des messages d'erreurs -
-	my $message_inexistant =
-"Le fichier que vous avez demandé n\'existe pas. Vérifier que l'URL que vous avez indiqué est bonne";
-
-	my $message_indispo =
-	  "Le fichier que vous avez demandé n'est plus disponible.
- Après un temps déterminé, le fichier est automatiquement supoprimé de nos serveurs.
- Vous pouvez contacter l'utilisateur $file_author afin qu'il redépose le fichier";
-
-	#Vérification de la présence dans la base de données
-	#Vérification de la présence dans les fichiers encore existants
-
-	#Envoi d'un message d'erreur si fichier inexistant
-	if ( !$file_exist ) {
-		$message = $message_inexistant;
-		template 'download', { message => $message };
-
-	}
-
-	#Envoi d'un message d'erreur si fichier non disponible
-	elsif ( !$file_available ) {
-		$message = $message_indispo;
-		template 'download', { message => $message };
-	}
-	else {
-
-#On récupère toutes les informations du fichiers présent dans la base de données
-
-		$file_size   = "1001000";
-		$file_name   = "Le language des fleurs.pdf";
-		$file_author = "abourgan";
-
-		my $file_URL =
-"<a href=\"/cgi-bin/IntraBox/public/Upload/$file_name_disk\">Lien du fichier</a>";
-		$message =
-"Le téléchargement du fichier $file_name déposé par $file_author est sur le point de commencer. Si rien ne se passe, vous pouvez cliquer sur le lien suivant : $file_URL";
-
-		template 'download', { message => $message };
-
-		send_file(
-			"/Upload/$file_name_disk",
-			filename => "$file_name"
-		);
-	}
-}
-
-#--- /DOWNLOAD ----
-
-#--- Infos User ---
-
-sub recuperation_donnees_session_user {
-	my $user = $_[0];
-	my $isAdmin;
-	$user = "abourgan";
-	if ( $user eq "abourgan" ) {
-		$isAdmin = true;
-
-	}
-	else { $isAdmin = false; }
-
-	my $user_group            = "eleves";
-	my $user_size_file_limit  = 100 * 1024 * 1024;
-	my $user_size_space_limit = 400 * 1024 * 1024;
-	return ( $isAdmin, $user_group, $user_size_file_limit,
-		$user_size_space_limit );
-}
-
-sub calcul_used_space {
-	my $user            = $_[0];
-	my $user_space_used = 10 * 1024 * 1024;
-	return $user_space_used;
 }
 
 #--- /Infos User ---
