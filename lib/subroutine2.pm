@@ -30,9 +30,10 @@ my $status;
 my $id_status2;
 my $download_code;
 
+
 sub gestion_all_fichiers {
 
-	my $login_user = "abourgan";
+	my $login_user = $sess->login;
 	my $id_user;
 
 	my @liste_user =
