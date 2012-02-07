@@ -23,6 +23,7 @@ __PACKAGE__->table("user");
 =head2 id_user
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 login
@@ -41,13 +42,14 @@ __PACKAGE__->table("user");
 
 __PACKAGE__->add_columns(
   "id_user",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "login",
   { data_type => "varchar", is_nullable => 0, size => 45 },
   "admin",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id_user");
+__PACKAGE__->add_unique_constraint("login_UNIQUE", ["login"]);
 
 =head1 RELATIONS
 
@@ -62,13 +64,13 @@ Related object: L<DB::intrabox::Result::Deposit>
 __PACKAGE__->has_many(
   "deposits",
   "DB::intrabox::Result::Deposit",
-  { "foreign.user_id_user" => "self.id_user" },
+  { "foreign.id_user" => "self.id_user" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 15:43:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TeI4AXPpXHY+eNJAimEPUQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 17:27:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vUOth4wUi+IlBzuYwX87dg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -23,13 +23,14 @@ __PACKAGE__->table("deposit");
 =head2 id_deposit
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 id_user
 
-  data_type: 'varchar'
+  data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 0
-  size: 30
 
 =head2 download_code
 
@@ -112,19 +113,13 @@ __PACKAGE__->table("deposit");
   is_nullable: 0
   size: 150
 
-=head2 user_id_user
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
 =cut
 
 __PACKAGE__->add_columns(
   "id_deposit",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "id_user",
-  { data_type => "varchar", is_nullable => 0, size => 30 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "download_code",
   { data_type => "varchar", is_nullable => 0, size => 45 },
   "area_access_code",
@@ -153,10 +148,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 19 },
   "created_useragent",
   { data_type => "varchar", is_nullable => 0, size => 150 },
-  "user_id_user",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id_deposit", "id_status", "user_id_user");
+__PACKAGE__->set_primary_key("id_deposit", "id_user", "id_status");
 
 =head1 RELATIONS
 
@@ -175,7 +168,7 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
-=head2 user_id_user
+=head2 id_user
 
 Type: belongs_to
 
@@ -184,9 +177,9 @@ Related object: L<DB::intrabox::Result::User>
 =cut
 
 __PACKAGE__->belongs_to(
-  "user_id_user",
+  "id_user",
   "DB::intrabox::Result::User",
-  { id_user => "user_id_user" },
+  { id_user => "id_user" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -206,8 +199,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 15:43:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EA0l3Jr43yFUoCPL3X0pWw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 17:27:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w+wR39jZXMxO6o/Vdog2bg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

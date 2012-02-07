@@ -23,6 +23,7 @@ __PACKAGE__->table("download");
 =head2 id_download
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 id_deposit
@@ -71,7 +72,7 @@ __PACKAGE__->table("download");
 
 __PACKAGE__->add_columns(
   "id_download",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "id_deposit",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "id_file",
@@ -107,8 +108,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 15:43:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HsgsYGfWDgWNYCfrNixlKg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 17:27:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9akp+3tBWaO1v21At62nkA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
