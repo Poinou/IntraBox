@@ -3,14 +3,16 @@ use Dancer ':syntax';
 use Digest::SHA1;
 use strict;
 use warnings;
+
 use subroutine;
+use subroutine2;
 use subroutine3;
+
 use Class::Date qw(:errors date localdate gmdate now -DateParse);
 
 use lib '.';
 use DB::intrabox;
 use DBI;
-
 
 use Data::FormValidator;
 
@@ -18,8 +20,9 @@ use DBIx::Class::FromValidators;
 our $VERSION = '0.1';
 
 # Connexion à la base de données
-my $dsn    = "dbi:mysql:intrabox";
-my $schema = DB::intrabox->connect( $dsn, "", "" ) or die "problem";
+my $dsn = "dbi:mysql:intrabox";
+my $schema = DB::intrabox->connect( $dsn, "", "" )
+  or die "problem";
 
 #Récupération du nom
 my $user = $ENV{'REMOTE_USER'};
@@ -65,86 +68,106 @@ get '/admin/download' => sub {
 };
 
 get '/admin/admin' => sub {
-	my @admins = $schema->resultset('User')->search({admin => true})->all;
+	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
 	template 'admin/admin', { isAdmin => $isAdmin, admins => \@admins };
 };
 
 post '/admin/admin/new' => sub {
 
-  # validation des paramètres
-  my $params = request->params;
-  my $msgs;
-  # recherche de l'admin à ajouter
-	my $admin = $schema->resultset('User')->search({login => param('login') })->first();
-	if (not defined $admin) {
-	    my $login = param('login');
-	    $msgs = {
-			alert => "Il n'y a pas d'utilisateur correspondant au login <strong>$login</strong>"
-		};
+	# validation des paramètres
+	my $params = request->params;
+	my $msgs;
+
+	# recherche de l'admin à ajouter
+	my $admin =
+	  $schema->resultset('User')->search( { login => param('login') } )
+	  ->first();
+	if ( not defined $admin ) {
+		my $login = param('login');
+		$msgs =
+		  { alert =>
+"Il n'y a pas d'utilisateur correspondant au login <strong>$login</strong>"
+		  };
 	}
 	else {
-	    my $login = $admin->login;
-	    $msgs = {
-			info => "Vous venez d'ajouter l'administrateur <strong>$login</strong>"
-		};
-		$admin->update({ admin => true });
+		my $login = $admin->login;
+		$msgs =
+		  { info =>
+			  "Vous venez d'ajouter l'administrateur <strong>$login</strong>" };
+		$admin->update( { admin => true } );
 	}
-	
-	my @admins = $schema->resultset('User')->search({admin => true})->all;
-	template 'admin/admin', 
-		{ isAdmin => $isAdmin, 
-			msgs => $msgs,
-			admins => \@admins 
-		};
+
+	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
+	template 'admin/admin',
+	  {
+		isAdmin => $isAdmin,
+		msgs    => $msgs,
+		admins  => \@admins
+	  };
 };
 
 get qr{/admin/admin/delete/(?<id>\d+)} => sub {
-	
-  	my $msgs;
-	my $id = captures->{'id'}; # le paramètre id est dans l'URL
+
+	my $msgs;
+	my $id = captures->{'id'};    # le paramètre id est dans l'URL
 	delete params->{captures};
-	
+
 	# recherche de l'admin à supprimer
 	my $admin = $schema->resultset('User')->find($id);
-	if (not defined $admin) {
-	    $msgs = {
-			alert => "Il n'y a pas d'utilisateur à l'ID <strong>$id</strong>"
-		};
+	if ( not defined $admin ) {
+		$msgs =
+		  { alert =>
+			  "Il n'y a pas d'utilisateur à l'ID <strong>$id</strong>" };
 	}
 	else {
-	    my $login = $admin->login;
-	    $msgs = {
-			warning => "Vous venez de retirer l'administrateur <strong>$login</strong>"
-		};
-		$admin->update({ admin => false });
+		my $login = $admin->login;
+		$msgs =
+		  { warning =>
+			  "Vous venez de retirer l'administrateur <strong>$login</strong>"
+		  };
+		$admin->update( { admin => false } );
 	}
-	
-	my @admins = $schema->resultset('User')->search({admin => true})->all;
-	template 'admin/admin', 
-		{ isAdmin => $isAdmin, 
-			msgs => $msgs,
-			admins => \@admins 
-		};
+
+	my @admins = $schema->resultset('User')->search( { admin => true } )->all;
+	template 'admin/admin',
+	  {
+		isAdmin => $isAdmin,
+		msgs    => $msgs,
+		admins  => \@admins
+	  };
 };
 
 post '/upload' => sub {
-
 	upload_file();
 };
 
-get '/download' => sub {
-	my $param_file = "iF87pzYbxcmSsr";
+get '/download/:file_name' => sub {
+	my $param_file = param("file_name");
 	download_file($param_file);
 };
 
-get '/downloadFile' => sub {
-	my $param_file = "iF87pzYbxcmSsr";
-	donwload_file_user($param_file);
+post '/downloadFile' => sub {
+
+	my $name_on_disk = param("name_on_disk");
+	my $name = param("name");
+	donwload_file_user($name_on_disk,$name);
+	
 };
 
 get '/test' => sub {
 	template 'test', {};
 };
+
+get '/gestionFichiers' => sub {
+	gestion_all_fichiers();
+};
+
+get '/voirDepot/:deposit' => sub {
+	my $param_file = param("deposit");
+	afficher_depot($param_file);
+};
+
+
 
 #--------- /ROUTEES -------
 
@@ -183,6 +206,7 @@ sub upload_file {
 		my $current_date;
 		my $expiration_date;
 		my $expiration_days_date;
+		my $id_status;
 
 		#------- Phase de récupération de tous les paramètres -------
 		$expiration_days  = param("expiration_days");
@@ -229,22 +253,18 @@ sub upload_file {
 				$size_files[$i] = $upload_files[$i]->size;
 				$name_files[$i] = $upload_files[$i]->basename;
 
-				#				my $sha1 = Digest::SHA1->new;
-				#				$sha1->add("$name_files[$i]");
-				#				$hash_names[$i] = $sha1->hexdigest;
 				$hash_names[$i] = generate_aleatoire_key(15);
 
 				#Vérification de l'unicité de la clé du fichier
-#				my @liste_file =
-#				  $schema->resultset('File')
-#				  ->search( { name_on_disk => "$hash_names[$i]", } );
-#				while (@liste_file) {
-#					$hash_names[$i] = generate_aleatoire_key(15);
-#					@liste_file =
-#					  $schema->resultset('File')
-#					  ->search( { name_on_disk => "$hash_names[$i]", } )
-#					  ;
-#				}
+				my @liste_file =
+				  $schema->resultset('File')
+				  ->search( { name_on_disk => "$hash_names[$i]", } );
+				while (@liste_file) {
+					$hash_names[$i] = generate_aleatoire_key(15);
+					@liste_file =
+					  $schema->resultset('File')
+					  ->search( { name_on_disk => "$hash_names[$i]", } );
+				}
 
 				$total_size = $total_size + $size_files[$i];
 
@@ -310,11 +330,18 @@ sub upload_file {
 					$id_user = $user_liste->id_user;
 				}
 
+				my @liste_status =
+				  $schema->resultset('Status')
+				  ->search( { name => "disponible", } );
+				for my $status_liste (@liste_status) {
+					$id_status = $status_liste->id_status;
+				}
+
 				my $new_deposit = $schema->resultset('Deposit')->create(
 					{
-						id_user              => "$id_user",
-						download_code        => "$deposit_key",
-						id_status            => "1",
+						id_user              => $id_user,
+						download_code        => $deposit_key,
+						id_status            => $id_status,
 						expiration_date      => $expiration_date,
 						expiration_days      => $expiration_days,
 						opt_acknowledgement  => $acknowlegdement,
@@ -340,12 +367,11 @@ sub upload_file {
 				for ( $k = 1 ; $k <= $number_files ; $k++ ) {
 					my $new_file = $schema->resultset('File')->create(
 						{
-							id_deposit => $id_deposit,
-							name       => $name_files[$k],
-							size       => $size_files[$k],
-
-							#name_on_disk => $hash_names[$k],
-							on_server => "1",
+							id_deposit   => $id_deposit,
+							name         => $name_files[$k],
+							size         => $size_files[$k],
+							name_on_disk => $hash_names[$k],
+							on_server    => "1",
 						}
 					);
 				}
