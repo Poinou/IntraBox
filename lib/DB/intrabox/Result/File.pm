@@ -49,6 +49,12 @@ __PACKAGE__->table("file");
   default_value: 1
   is_nullable: 0
 
+=head2 name_on_disk
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 60
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -62,6 +68,8 @@ __PACKAGE__->add_columns(
   { data_type => "float", is_nullable => 0 },
   "on_server",
   { data_type => "tinyint", default_value => 1, is_nullable => 0 },
+  "name_on_disk",
+  { data_type => "varchar", is_nullable => 0, size => 60 },
 );
 __PACKAGE__->set_primary_key("id_file", "id_deposit");
 
@@ -101,8 +109,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-30 16:35:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:p1ysxr/IVI7ynYEkuzEuMw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-01-31 15:37:51
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qaUwEpRhn1s+ENj+yxO/eA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
